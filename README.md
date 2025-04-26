@@ -1,133 +1,111 @@
-# Whisper Transcription App
+# Whisper Transcription Tool
 
-A powerful Python application that records audio, transcribes it using OpenAI's Whisper API, enhances transcripts with GPT-4.1, and generates images based on transcript content using GPT-Image-1.
+A comprehensive Python application for audio recording, transcription, and processing using OpenAI's Whisper API and GPT models.
 
 ## Features
 
-- Record audio directly from your microphone
-- Transcribe existing audio files from the 'record' directory (supports .mp3, .m4a, .wav, .flac, .ogg, .aac, .wma, .mka)
-- Automatically handles large files by splitting them into chunks
-- Save transcripts as markdown files with timestamps in a dedicated 'transcript' directory
-- Advanced post-processing with OpenAI's GPT-4.1:
-  - Generate concise summaries with key points
-  - Create cleaner transcripts by removing filler words and verbal noise
-- Generate images from transcript content using OpenAI's GPT-Image-1:
-  - Automatic extraction of key visual elements
-  - Intelligent prompt engineering for high-quality images
-  - Save generated images with references back to source transcripts
-- Interact with existing transcripts in multiple ways:
-  - Ask questions about transcript content
-  - Generate reformatted versions in various styles
-  - Create visual representations of transcripts
+- **Audio Recording**: Record audio from your microphone
+- **Transcription**: Transcribe audio files using OpenAI's Whisper API
+- **Text Processing**:
+  - Generate summaries
+  - Extract key points
+  - Extract action items
+  - Reformat transcripts in various styles
+  - Translate transcripts to other languages
+  - Analyze sentiment
+- **Image Generation**: Create images based on transcripts or custom prompts using OpenAI's GPT-Image-1 model
+  - Support for HD or standard quality
+  - Style selection (vivid or natural)
+- **File Management**: Manage audio, transcript, and image files
 
-## Prerequisites
+## Requirements
 
-- Python 3.9 or higher
-- OpenAI API key with access to GPT-4.1 and GPT-Image-1
-- A microphone connected to your computer (for recording)
-- FFmpeg installed on your system (for audio file conversion)
-- Pillow (PIL) for image processing
+- Python 3.8+
+- OpenAI API key
+- PortAudio (for PyAudio)
 
 ## Installation
 
 1. Clone this repository:
-   ```
+   ```bash
    git clone <repository-url>
-   cd whisper
+   cd whisper-transcription-tool
    ```
 
-2. Install FFmpeg (if not already installed):
-   - On Ubuntu/Debian: `sudo apt-get install ffmpeg`
-   - On macOS: `brew install ffmpeg`
-   - On Windows: Download from [ffmpeg.org](https://ffmpeg.org/download.html) or use Chocolatey: `choco install ffmpeg`
+2. Set up a virtual environment (optional but recommended):
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+   ```
 
 3. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
    ```
-   pip install .
+
+4. PortAudio installation:
+   - **macOS**: `brew install portaudio`
+   - **Ubuntu/Debian**: `sudo apt-get install portaudio19-dev`
+   - **Windows**: PortAudio binaries are included with PyAudio wheels
+
+5. Set your OpenAI API key:
+   ```bash
+   export OPENAI_API_KEY="your-api-key"
+   ```
+   For Windows:
+   ```cmd
+   set OPENAI_API_KEY=your-api-key
    ```
 
 ## Usage
 
-1. Run the application:
-   ```
-   python main.py
-   ```
+### Running the Application
 
-2. If you haven't set the `OPENAI_API_KEY` environment variable, you will be prompted to enter your OpenAI API key.
+```bash
+python main.py
+```
 
-3. Choose from the following options:
-   - Option 1: Record new audio
-     - Press Enter to start recording
-     - Press 'f' to finish recording
-   - Option 2: Transcribe existing audio file
-     - Select from the list of audio files in the 'record' directory
-   - Option 3: Interact with existing transcripts
-   - Option 4: Quit the application
+This will start the interactive menu-driven interface where you can access all features.
 
-4. After transcription is complete, you'll see a post-transcription menu with these options:
-   - Option 1: Save transcript as is
-   - Option 2: Generate summary (key points)
-   - Option 3: Generate cleaner transcript
-   - Option 4: Both summary and cleaner transcript
-   - Option 5: Generate image from transcript
-   - Option 6: Return to main menu
+### Command-Line Options
 
-5. When interacting with existing transcripts, you can:
-   - Ask questions about the transcript
-   - Reformat the transcript in various styles
-   - Generate an image based on transcript content
-   - Return to the main menu
+The application also supports command-line options for quick actions:
 
-## Image Generation
+```bash
+# Record audio (using Ctrl+C to stop)
+python main.py --record
 
-The application uses a two-stage process for generating images from transcripts:
+# Record audio for a specific duration (in seconds)
+python main.py --record --duration 60
 
-1. **Visual Element Extraction**: GPT-4.1 analyzes the transcript to identify key visual elements that could be visually represented.
+# Transcribe an audio file
+python main.py --transcribe /path/to/audio/file.wav
+```
 
-2. **Prompt Engineering**: Another GPT-4.1 call converts these elements into a detailed prompt optimized for image generation.
+## Directory Structure
 
-3. **Image Creation**: The prompt is sent to OpenAI's GPT-Image-1 model, which generates a high-quality image.
+The application creates the following directories to store files:
 
-4. **Image Storage**: Generated images are saved in the 'generated_images' directory with reference files linking back to source transcripts.
+- `recordings/`: Recorded audio files
+- `transcripts/`: Transcription files
+- `processed/`: Processed text files (summaries, translations, etc.)
+- `images/`: Generated images
 
-## File Organization
+## Modules
 
-- Audio files are stored in the 'record' directory
-- Transcripts are saved in the 'transcript' directory
-- Enhanced transcripts (summaries, cleaned versions, Q&A) go to 'improved-transcript'
-- Generated images are saved in the 'generated_images' directory
-- The application automatically creates all necessary directories
-
-## Transcript Formats
-
-The application supports multiple transcript formats:
-
-- Standard transcripts (raw from Whisper API)
-- Cleaned transcripts (filler words and verbal noise removed)
-- Bullet-point summaries
-- Q&A format
-- Speaker-separated format
-- Simplified language
-- Structured format with sections
-- Action item extraction
-- Custom formats
-
-## Troubleshooting
-
-- If you encounter issues with PyAudio installation, you may need to install additional system dependencies:
-  - On Ubuntu/Debian: `sudo apt-get install portaudio19-dev`
-  - On macOS: `brew install portaudio`
-  - On Windows: PyAudio wheel should install without additional dependencies
-
-- For image generation issues:
-  - Ensure your OpenAI API key has access to GPT-Image-1
-  - Check that the transcript contains visualizable content
-  - Consider internet connection speed for downloading images
-  - Verify Pillow (PIL) is properly installed for image saving
-
-- For very large files, the chunking and processing may take some time
+- `audio.py`: Audio recording and file management
+- `transcription.py`: Audio transcription using Whisper API
+- `processors.py`: Text processing using OpenAI GPT models
+- `image_gen.py`: Image generation using GPT-Image-1
+- `main.py`: Main application and user interface
 
 ## License
 
-This project is open-source and available under the MIT License.
-# TinyWhisperAgent
+[MIT License](LICENSE)
+
+## Acknowledgements
+
+This application uses the following APIs from OpenAI:
+- Whisper API for transcription
+- GPT models for text processing
+- GPT-Image-1 for image generation

@@ -5,6 +5,12 @@
 ## Version History
 v1.0 - Initial tech stack documentation
 v1.1 - Updated to use GPT-4.1 and added GPT-Image-1 integration
+v1.2 - Added GitHub repository information
+v1.3 - Updated to reflect GPT-Image-1 API parameters (quality, style)
+
+## Repository Information
+
+- **GitHub Repository**: [https://github.com/Senn-01/TinyWhisperAgent.git](https://github.com/Senn-01/TinyWhisperAgent.git)
 
 ## Current Technology Stack
 
@@ -14,17 +20,18 @@ v1.1 - Updated to use GPT-4.1 and added GPT-Image-1 integration
 |------------|---------|---------|
 | Python | 3.9+ | Primary programming language |
 | OpenAI API | Latest | Access to Whisper, GPT-4.1, and GPT-Image-1 models |
-| PyAudio | 0.2.13 | Audio recording and processing |
+| PyAudio | 0.2.14 | Audio recording and processing |
 | ffmpeg | Latest | Audio file conversion and chunking |
-| PIL (Pillow) | Latest | Image processing |
+| PIL (Pillow) | 10.1.0 | Image processing |
+| Requests | 2.31.0 | HTTP requests for API interaction |
 
 ### AI/ML Models
 
-| Model | Provider | Purpose |
-|-------|----------|---------|
-| Whisper API | OpenAI | Audio transcription |
-| GPT-4.1 | OpenAI | Transcript processing and analysis |
-| GPT-Image-1 | OpenAI | Image generation from transcript content |
+| Model | Provider | Purpose | Key Parameters |
+|-------|----------|---------|----------------|
+| Whisper API | OpenAI | Audio transcription | N/A |
+| GPT-4.1 | OpenAI | Transcript processing and analysis | temperature, max_tokens |
+| GPT-Image-1 | OpenAI | Image generation from transcript content | quality (standard/hd), style (vivid/natural) |
 
 ### User Interface
 
