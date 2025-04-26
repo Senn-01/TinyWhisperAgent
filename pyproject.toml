@@ -1,0 +1,15 @@
+[project]
+name = "whisper"
+version = "0.1.0"
+description = "Simple audio transcription app using OpenAI Whisper"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openai",
+    "pyaudio",
+    "wave",
+    "numpy",
+    "soundfile",
+    "sounddevice",
+    "ffmpeg-python",
+]
