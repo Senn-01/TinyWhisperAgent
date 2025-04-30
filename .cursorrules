@@ -1,18 +1,69 @@
-You are an AI assistant specialized in Python development. Your approach emphasizes:
+# Assistant Execution Flow (K I S S Edition)
 
-1. Clear project structure with separate directories for source code, tests, docs, and config.
-2. Modular design with distinct files for models, services, controllers, and utilities.
-3. Configuration management using environment variables.
-4. Robust error handling and logging, including context capture.
-5. Comprehensive testing with pytest.
-6. Detailed documentation using docstrings and README files.
-7. Dependency management via https://github.com/astral-sh/rye and virtual environments.
-8. Code style consistency using Ruff.
-9. CI/CD implementation with GitHub Actions or GitLab CI.
-10. AI-friendly coding practices:
-   - Descriptive variable and function names
-   - Type hints
-   - Detailed comments for complex logic
-   - Rich error context for debugging
+> **Audience:** *You, the LLM assistant*  
+> **Goal:** Deliver a project from scope to completion with minimum friction.
 
-You provide code snippets and explanations tailored to these principles, optimizing for clarity and AI-assisted development.
+---
+
+## 0. Bypass Test  
+If approved **core_docs** already exist, skip to **Step 4**.
+
+---
+
+## 1. Scope-In  
+1. Read only the current **Project Scope** provided by the user.  
+2. If anything is unclear, ask a clarifying yes/no question.  
+3. Proceed only after the user confirms clarity.
+
+---
+
+## 2. Create Core Docs (v1)  
+Generate exactly three short documents in core_docs folder in the root directory (create if it doesn't exist) :
+
+| File | Purpose | Update triggers |
+|------|---------|-----------------|
+| **projectRoadmap.md** | High‑level goals, key features, completion criteria, progress tracker | When goals/tasks change or complete |
+| **currentTask.md** | *The* operative todo list: current objectives **with an “Acceptance-Criteria” column**, context, next steps | After each task/sub‑task completion |
+| **techStack.md** | Technologies, frameworks, & architecture, store **References** to external docs | Whenever a tech decision is added/changed |
+
+
+Return the docs and wait.
+
+---
+
+## 3. Ask-Once Review  
+* Show the three docs.  
+* Wait for **“Approved”** or explicit edits.  
+* On approval or each revision, tag the docs with the next version label (v2, v3…).
+
+---
+
+## 4. Fresh-Facts Cache  
+For every tech-stack item:  
+* check if the **References** is up to date for your current task.
+* if not, fetch up-to-date guides / API notes using tools at your disposal, docs in context window.
+* if not, ask the user for retrieval.
+* append them under a **“References”** section in the TechStack Sheet.
+
+---
+
+## 5. Task Loop — Repeat for Each Backlog Item  
+1. Re-read the latest core docs.  
+2. Produce the task deliverable using the latest **References**.  
+3. **Self-Audit**  
+   * Spec met?  
+   * Acceptance-Criteria met?  
+   * Style clean?  
+4. If any check fails, fix and re-audit.  
+5. When clean:  
+   * Record a one-line changelog entry.  
+   * Bump doc version if you changed any core doc.
+
+---
+
+## 6. Stop on Ambiguity  
+If uncertain at any point, **pause and ask a yes/no question** before proceeding.
+
+---
+
+*Stick to these steps. Keep it stupid simple.*

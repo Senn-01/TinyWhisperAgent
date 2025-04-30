@@ -15,8 +15,9 @@ A comprehensive Python application for audio recording, transcription, and proce
   - Analyze sentiment
 - **Image Generation**: Create images based on transcripts or custom prompts using OpenAI's GPT-Image-1 model
   - Support for HD or standard quality
-  - Style selection (vivid or natural)
+  - Rich interactive UI with progress visualization
 - **File Management**: Manage audio, transcript, and image files
+- **Rich Terminal UI**: Beautiful, colorful terminal interface with interactive components
 
 ## Requirements
 
@@ -38,9 +39,9 @@ A comprehensive Python application for audio recording, transcription, and proce
    source venv/bin/activate  # On Windows, use: venv\Scripts\activate
    ```
 
-3. Install the required dependencies:
+3. Install the package in development mode:
    ```bash
-   pip install -r requirements.txt
+   pip install -e .
    ```
 
 4. PortAudio installation:
@@ -62,10 +63,22 @@ A comprehensive Python application for audio recording, transcription, and proce
 ### Running the Application
 
 ```bash
+# After installing the package
+whisper-tool
+
+# OR from the project directory 
 python main.py
 ```
 
 This will start the interactive menu-driven interface where you can access all features.
+
+### Simple Example
+
+A basic example script is included to demonstrate the transcription functionality:
+
+```bash
+python examples/simple_transcription.py
+```
 
 ### Command-Line Options
 
@@ -73,31 +86,65 @@ The application also supports command-line options for quick actions:
 
 ```bash
 # Record audio (using Ctrl+C to stop)
-python main.py --record
+whisper-tool --record
 
 # Record audio for a specific duration (in seconds)
-python main.py --record --duration 60
+whisper-tool --record --duration 60
 
 # Transcribe an audio file
-python main.py --transcribe /path/to/audio/file.wav
+whisper-tool --transcribe /path/to/audio/file.wav
 ```
 
 ## Directory Structure
 
-The application creates the following directories to store files:
+The application uses the following directories to store files:
 
-- `recordings/`: Recorded audio files
-- `transcripts/`: Transcription files
-- `processed/`: Processed text files (summaries, translations, etc.)
-- `images/`: Generated images
+- `data/recordings/`: Recorded audio files
+- `data/transcripts/`: Transcription files
+- `data/processed/`: Processed text files (summaries, translations, etc.)
+- `data/images/`: Generated images
+- `logs/`: Application log files (created when needed)
+- `whisper_transcription_tool/`: Main package
+  - `cli/`: Command-line interface
+  - `audio.py`, `transcription.py`, etc.: Core functionality modules
 
-## Modules
+## Package Modules
 
-- `audio.py`: Audio recording and file management
-- `transcription.py`: Audio transcription using Whisper API
-- `processors.py`: Text processing using OpenAI GPT models
-- `image_gen.py`: Image generation using GPT-Image-1
-- `main.py`: Main application and user interface
+- `whisper_transcription_tool/audio.py`: Audio recording and file management
+- `whisper_transcription_tool/transcription.py`: Audio transcription using Whisper API
+- `whisper_transcription_tool/processors.py`: Text processing using OpenAI GPT models
+- `whisper_transcription_tool/image_gen.py`: Image generation using GPT-Image-1
+- `whisper_transcription_tool/cli/main.py`: Main application and user interface
+- `whisper_transcription_tool/config.py`: Centralized configuration settings
+- `whisper_transcription_tool/logger.py`: Consistent logging system
+- `whisper_transcription_tool/errors.py`: Custom exception classes
+
+## Recent Updates
+
+### v2.0 Updates
+
+- **Complete Package Restructure**:
+  - Reorganized code into a proper Python package structure
+  - Created a clean and modular architecture
+  - Improved imports and code organization
+  - Better separation of concerns between modules
+
+- **Simplified API**:
+  - Removed speaker diarization functionality
+  - Standardized on whisper-1 model for all transcriptions
+  - Fixed image generation quality parameters
+  - Improved error handling
+
+- **Better Installation**:
+  - Package can now be installed with pip
+  - Added console script entry point
+  - Simplified dependencies
+
+- **Code Quality**:
+  - Added type hints throughout the codebase
+  - Improved error handling with custom exceptions
+  - Consistent logging with dedicated logger module
+  - Centralized configuration
 
 ## License
 
@@ -105,7 +152,7 @@ The application creates the following directories to store files:
 
 ## Acknowledgements
 
-This application uses the following APIs from OpenAI:
-- Whisper API for transcription
-- GPT models for text processing
-- GPT-Image-1 for image generation
+This application uses the following APIs and models:
+- OpenAI's Whisper API for transcription
+- OpenAI's GPT models for text processing
+- OpenAI's GPT-Image-1 for image generation
