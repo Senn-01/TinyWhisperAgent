@@ -1,11 +1,11 @@
-# Tech Stack
+# Tech Stack v2
 
 ## Core Technologies
 - Python 3.8+
 - OpenAI API suite
   - Whisper API for transcription
   - GPT-4.1 for text processing
-  - DALL-E 3 for image generation (upgrading from gpt-image-1)
+  - DALL-E 3 for image generation (upgraded from gpt-image-1)
 
 ## Libraries & Frameworks
 - Rich: Terminal UI framework for beautiful console interfaces
@@ -21,14 +21,14 @@
   - `transcription.py`: Audio transcription using Whisper API
   - `processors.py`: Text processing using GPT models
   - `image_gen.py`: Image generation using DALL-E 3
-  - `conversation.py`: Handling conversations with AI assistant (to be implemented)
+  - `conversation.py`: Handling conversations with AI assistant
 
 ## Data Management
 - `data/recordings/`: Recorded audio files
 - `data/transcripts/`: Transcription files
 - `data/processed/`: Processed text files
 - `data/images/`: Generated images
-- `data/conversation/`: Conversation logs (to be implemented)
+- `data/conversation/`: Conversation logs
 
 ## References
 - OpenAI Whisper API: https://platform.openai.com/docs/guides/speech-to-text
