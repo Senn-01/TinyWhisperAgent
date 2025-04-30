@@ -80,17 +80,25 @@ def generate_image_from_transcript(transcript: str, quality: str = "standard") -
             
             api_quality = quality_map.get(quality, "medium")  # Default to medium if not in map
                 
-            # Generate the image
+            # Generate the image with style parameter from config
             image_response = openai.images.generate(
                 model="gpt-image-1",
                 prompt=image_prompt,
                 size="1024x1024",
                 quality=api_quality,
+                style="vivid",  # Adding style parameter
                 n=1
             )
             
-            # Get the image URL
-            image_url = image_response.data[0].url
+            # Get the image URL with error handling
+            image_url = image_response.data[0].url if image_response.data and hasattr(image_response.data[0], 'url') else None
+            
+            # Check if URL is valid
+            if not image_url:
+                console.print("[bold red]Error: Image generation API did not return a valid URL[/]")
+                progress.update(task, completed=True)
+                return None
+                
             progress.update(task, completed=True)
         
         # Download and save the image
@@ -155,17 +163,25 @@ def generate_image_from_prompt(prompt: str, quality: str = "standard") -> Option
             
             api_quality = quality_map.get(quality, "medium")  # Default to medium if not in map
                 
-            # Generate the image with correct parameters
+            # Generate the image with correct parameters including style
             image_response = openai.images.generate(
                 model="gpt-image-1",
                 prompt=prompt,
                 size="1024x1024",
                 quality=api_quality,
+                style="vivid",  # Adding style parameter
                 n=1
             )
             
-            # Get the image URL
-            image_url = image_response.data[0].url
+            # Get the image URL with error handling
+            image_url = image_response.data[0].url if image_response.data and hasattr(image_response.data[0], 'url') else None
+            
+            # Check if URL is valid
+            if not image_url:
+                console.print("[bold red]Error: Image generation API did not return a valid URL[/]")
+                progress.update(task, completed=True)
+                return None
+                
             progress.update(task, completed=True)
         
         # Download and save the image
@@ -210,6 +226,11 @@ def download_image(url: str, filepath: str, progress=None, task_id=None) -> bool
         bool: True if successful, False otherwise
     """
     try:
+        # Validate URL before making request
+        if not url or url == "None":
+            console.print(f"[bold red]Error downloading image:[/] Invalid URL '{url}': No scheme supplied.")
+            return False
+            
         response = requests.get(url, stream=True)
         response.raise_for_status()  # Raise an exception for HTTP errors
         
