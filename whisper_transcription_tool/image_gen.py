@@ -22,7 +22,7 @@ console = Console()
 
 def generate_image_from_transcript(transcript: str, quality: str = "standard") -> Optional[str]:
     """
-    Generate an image based on the transcript using OpenAI's GPT-Image-1 model.
+    Generate an image based on the transcript using OpenAI's DALL-E 3 model.
     
     Args:
         transcript: The text to base the image generation on
@@ -57,8 +57,8 @@ def generate_image_from_transcript(transcript: str, quality: str = "standard") -
         
         console.print(Panel(f"[italic]{image_prompt}[/]", title="Generated Image Prompt", border_style="green"))
         
-        # Now generate the image using GPT-Image-1
-        console.print("[bold blue]Generating image with GPT-Image-1...[/]")
+        # Now generate the image using DALL-E 3
+        console.print("[bold blue]Generating image with DALL-E 3...[/]")
         
         with Progress(
             SpinnerColumn(),
@@ -70,19 +70,12 @@ def generate_image_from_transcript(transcript: str, quality: str = "standard") -
             task = progress.add_task("Generating image", total=None)
             
             # Map UI options to API quality values
-            # The API expects "low", "medium", "high", or "auto" for quality
-            quality_map = {
-                "1": "medium",  # Standard quality maps to "medium"
-                "2": "high",    # HD quality maps to "high"
-                "standard": "medium",
-                "hd": "high"
-            }
-            
-            api_quality = quality_map.get(quality, "medium")  # Default to medium if not in map
+            # DALL-E 3 supports "standard" and "hd" directly
+            api_quality = quality if quality in ["standard", "hd"] else "standard"
                 
-            # Generate the image with correct parameters
+            # Generate the image with DALL-E 3
             image_response = openai.images.generate(
-                model="gpt-image-1",
+                model="dall-e-3",
                 prompt=image_prompt,
                 size="1024x1024",
                 quality=api_quality,
@@ -102,7 +95,7 @@ def generate_image_from_transcript(transcript: str, quality: str = "standard") -
         
         # Download and save the image
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"gpt_image_{timestamp}.png"
+        filename = f"dalle3_image_{timestamp}.png"
         filepath = os.path.join(IMAGES_DIR, filename)
         
         # Download and save the image
@@ -130,7 +123,7 @@ def generate_image_from_transcript(transcript: str, quality: str = "standard") -
 
 def generate_image_from_prompt(prompt: str, quality: str = "standard") -> Optional[str]:
     """
-    Generate an image based on a user-provided prompt using OpenAI's GPT-Image-1 model.
+    Generate an image based on a user-provided prompt using OpenAI's DALL-E 3 model.
     
     Args:
         prompt: The prompt for image generation
@@ -140,7 +133,7 @@ def generate_image_from_prompt(prompt: str, quality: str = "standard") -> Option
         Optional[str]: Path to the saved image or None if generation failed
     """
     try:
-        console.print("[bold blue]Generating image with GPT-Image-1...[/]")
+        console.print("[bold blue]Generating image with DALL-E 3...[/]")
         
         with Progress(
             SpinnerColumn(),
@@ -151,20 +144,12 @@ def generate_image_from_prompt(prompt: str, quality: str = "standard") -> Option
         ) as progress:
             task = progress.add_task("Generating image", total=None)
             
-            # Map UI options to API quality values
-            # The API expects "low", "medium", "high", or "auto" for quality
-            quality_map = {
-                "1": "medium",  # Standard quality maps to "medium"
-                "2": "high",    # HD quality maps to "high"
-                "standard": "medium",
-                "hd": "high"
-            }
-            
-            api_quality = quality_map.get(quality, "medium")  # Default to medium if not in map
+            # DALL-E 3 supports "standard" and "hd" directly
+            api_quality = quality if quality in ["standard", "hd"] else "standard"
                 
-            # Generate the image with correct parameters
+            # Generate the image with DALL-E 3
             image_response = openai.images.generate(
-                model="gpt-image-1",
+                model="dall-e-3",
                 prompt=prompt,
                 size="1024x1024",
                 quality=api_quality,
@@ -184,7 +169,7 @@ def generate_image_from_prompt(prompt: str, quality: str = "standard") -> Option
         
         # Download and save the image
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"gpt_image_{timestamp}.png"
+        filename = f"dalle3_image_{timestamp}.png"
         filepath = os.path.join(IMAGES_DIR, filename)
         
         # Download and save the image

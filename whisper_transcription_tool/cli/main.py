@@ -56,6 +56,7 @@ def display_process_menu() -> None:
     print("4. Reformat Transcript")
     print("5. Translate Transcript")
     print("6. Analyze Sentiment")
+    print("7. Converse with AI Assistant")
     print("0. Back to Main Menu")
 
 
@@ -65,7 +66,8 @@ def display_file_menu() -> None:
     console.print("[1] List Audio Files")
     console.print("[2] List Transcript Files")
     console.print("[3] List Image Files")
-    console.print("[4] Delete File")
+    console.print("[4] List Conversation Files")
+    console.print("[5] Delete File")
     console.print("[0] Back to Main Menu")
 
 
@@ -263,6 +265,10 @@ def process_transcript_workflow() -> None:
                     print("-" * 50)
                     print(sentiment)
                     print("-" * 50)
+            elif choice == '7':
+                # Start conversation with the assistant
+                from whisper_transcription_tool import conversation
+                conversation.interactive_conversation(transcript)
             else:
                 print("Invalid choice. Please try again.")
         
@@ -347,7 +353,7 @@ def file_management_workflow() -> None:
     try:
         while True:
             display_file_menu()
-            choice = Prompt.ask("Enter your choice", choices=["0", "1", "2", "3", "4"], default="0")
+            choice = Prompt.ask("Enter your choice", choices=["0", "1", "2", "3", "4", "5"], default="0")
             
             if choice == '0':
                 break
@@ -376,13 +382,24 @@ def file_management_workflow() -> None:
                 image_files = image_gen.list_images()
                 
             elif choice == '4':
+                # List conversation files
+                from whisper_transcription_tool import conversation
+                conversation_files = conversation.list_conversations()
+                
+                if not conversation_files:
+                    console.print("[yellow]No conversation files found.[/]")
+                else:
+                    console.print(Panel("[bold]Available conversation files[/]", style="blue"))
+                    
+            elif choice == '5':
                 # Delete file
                 console.print(Panel("[bold]What type of file would you like to delete?[/]", style="blue"))
                 console.print("[1] Audio file")
                 console.print("[2] Transcript file")
                 console.print("[3] Image file")
+                console.print("[4] Conversation file")
                 
-                file_type = Prompt.ask("Enter your choice", choices=["1", "2", "3"], default="1")
+                file_type = Prompt.ask("Enter your choice", choices=["1", "2", "3", "4"], default="1")
                 
                 if file_type == '1':
                     # Delete audio file
@@ -457,6 +474,34 @@ def file_management_workflow() -> None:
                     
                     try:
                         file_path = image_gen.get_image_path(file_index)
+                    except ValueError:
+                        console.print("[bold red]Invalid input.[/]")
+                        continue
+                        
+                    if file_path and os.path.exists(file_path):
+                        confirm = Confirm.ask(f"Are you sure you want to delete {os.path.basename(file_path)}?")
+                        if confirm:
+                            try:
+                                os.remove(file_path)
+                                console.print("[bold green]File deleted successfully.[/]")
+                            except Exception as e:
+                                console.print(f"[bold red]Error deleting file:[/] {str(e)}")
+                elif file_type == '4':
+                    # Delete conversation file
+                    from whisper_transcription_tool import conversation
+                    conversation_files = conversation.list_conversations()
+                    
+                    if not conversation_files:
+                        console.print("[yellow]No conversation files found.[/]")
+                        continue
+                    
+                    file_index = IntPrompt.ask("Enter the number of the file to delete (or 0 to cancel)", default=0)
+                    
+                    if file_index == 0:
+                        continue
+                    
+                    try:
+                        file_path = conversation.get_conversation_file_path(file_index)
                     except ValueError:
                         console.print("[bold red]Invalid input.[/]")
                         continue

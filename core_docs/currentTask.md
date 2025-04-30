@@ -1,24 +1,27 @@
-# Current Task (v4)
+# Current Task
 
-## Current Objectives
+## Objectives
+1. Add conversation capability to post-transcript menu
+2. Implement DALL-E 3 for image generation
+3. Create conversation logging system
 
-| Task | Description | Acceptance-Criteria | Status |
+## Task Details
+
+| Task | Description | Acceptance Criteria | Status |
 |------|-------------|---------------------|--------|
-| Image Generation Bug | Fix image generation functionality that isn't working | - Fixed parameter issues in image_gen.py<br>- Updated menu choice labels<br>- Added mapping from UI terms to API parameters<br>- Image generation now works with correct quality values | Completed |
-| Simplify Transcription Models | Remove all models except whisper-1 | - Update transcription workflow to only offer whisper-1<br>- Remove code for other model options<br>- Ensure transcription still works properly | Completed |
-| Remove Diarization | Remove speaker diarization functionality to simplify codebase | - Remove diarization options from menus<br>- Remove or comment out diarization code<br>- Ensure transcription works without diarization | Completed |
+| Post-transcript conversation | Add ability for users to ask open questions to the assistant after transcript processing | - Menu option added to process menu<br>- User can enter free-form questions<br>- Assistant provides relevant answers<br>- Conversation history maintained during session | To Do |
+| Conversation logging | Save conversation history to files | - Conversations saved to data/conversation directory<br>- File naming includes timestamp<br>- Full conversation context preserved | To Do |
+| DALL-E 3 integration | Update image generation to use DALL-E 3 | - Image generation uses DALL-E 3 model<br>- Quality settings maintained<br>- Existing UI remains consistent | To Do |
 
 ## Context
-- Fixed image generation by properly mapping UI quality options to API-expected values
-  - Updated UI to show "Medium (Standard)" and "High (HD)" 
-  - Added mapping of these values to "medium" and "high" for the API
-  - Fixed both generate_image_from_transcript and generate_image_from_prompt functions
-- Simplified the transcription to only use the whisper-1 model
-- Removed speaker diarization functionality to keep the application simple
-- Updated all three core documents to reflect these changes
+The application currently uses gpt-image-1 for image generation and doesn't have conversation capabilities. We need to enhance it by:
+1. Adding a new option to the process menu for open conversations with the assistant
+2. Creating a persistent conversation log in data/conversation
+3. Upgrading the image generation from gpt-image-1 to DALL-E 3
 
 ## Next Steps
-1. Test the application to ensure all fixes work correctly
-2. Consider optimizing performance for large audio files
-3. Enhance test coverage 
-4. Update README to reflect the changes made to the application 
+1. Modify the process_transcript_workflow() function to add conversation option
+2. Create conversation module or functions for handling assistant interaction
+3. Update image_gen.py to use DALL-E 3 model
+4. Create data/conversation directory and implement logging functionality
+5. Test all implementations and ensure backward compatibility 
