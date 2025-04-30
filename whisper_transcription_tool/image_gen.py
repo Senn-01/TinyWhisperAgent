@@ -80,13 +80,12 @@ def generate_image_from_transcript(transcript: str, quality: str = "standard") -
             
             api_quality = quality_map.get(quality, "medium")  # Default to medium if not in map
                 
-            # Generate the image with style parameter from config
+            # Generate the image with correct parameters
             image_response = openai.images.generate(
                 model="gpt-image-1",
                 prompt=image_prompt,
                 size="1024x1024",
                 quality=api_quality,
-                style="vivid",  # Adding style parameter
                 n=1
             )
             
@@ -163,13 +162,12 @@ def generate_image_from_prompt(prompt: str, quality: str = "standard") -> Option
             
             api_quality = quality_map.get(quality, "medium")  # Default to medium if not in map
                 
-            # Generate the image with correct parameters including style
+            # Generate the image with correct parameters
             image_response = openai.images.generate(
                 model="gpt-image-1",
                 prompt=prompt,
                 size="1024x1024",
                 quality=api_quality,
-                style="vivid",  # Adding style parameter
                 n=1
             )
             
